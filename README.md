@@ -142,7 +142,7 @@ Remove-Item "<project-root>\.opencode"        # 若已存在真实目录先删�
 
 | 来源 | 去向 | 内容 |
 |---|---|---|
-| `~/.config/opencode/`（全局层） | `share/` | AGENTS.md、agent（pen-designer、pm-bot）、command、skills（16）、tools（5 脚本 + mermaid/）、runbooks（4）；全局仅保留 MCP、`external_directory`、`kanboard.env` 等机器层 |
+| `~/.config/opencode/`（全局层） | `share/` | AGENTS.md、agent（pen-designer、pm-bot）、command、skills（16）、tools（5 脚本 + mermaid/）、runbooks（4）；全局仅保留 MCP、`external_directory` 白名单、安全红线、`kanboard.env` 等机器层 |
 | `D:\dev\bbcare\.opencode\` | `share/agent/`（泛化） | leader / coder / tester / reviewer / analyst / tester-alt / reviewer-alt（.bak 未迁） |
 | 新写 | `share/opencode.json` | 通用权限段（env/ssh deny 等）+ 插件（codegraph / session-spawn）+ ollama provider |
 | 新写 | `share/skills/taskbook/`、`share/skills/orchestration/` | 机制模板（实例留在 bbcare / yuantoubao 仓库） |
@@ -169,3 +169,12 @@ Remove-Item "<project-root>\.opencode"        # 若已存在真实目录先删�
 - opencode 启动会在 junction 目标（`share/`）内生成 `package.json` / `node_modules` / `state/` / `.gitignore`，均已忽略。
 - 跨机迁移需核对运行环境：模型可用性（`deepseek/deepseek-v4-flash`、`opencode/big-pickle`）、Pen CLI（`PEN_CLI_KEY`）、Python/Minconda 依赖、Playwright Chromium、Mockoon CLI、DBX、Ollama。
 - 配置不热加载：迁移或改动后必须重启 opencode。
+
+### 迁移修复记录（2026-09-14）
+
+- **A3 路径中性化**（提交 `ec5c143`）：`share/agent/pen-designer.md` 临时目录改指机器层声明；`share/skills/mockoon-env/reference/cli-cheatsheet.md` MCP 示例改占位符并修正 `env`→`environment`。
+- **B1 公共层白名单**：机器层 `external_directory` 增 `D:/oce/opencode-env/**`（挂载项目经 junction 编辑 `.opencode/...` 按真实路径判定）；`install/machine.opencode.json.template` 增 `{{REPO_ROOT}}/**`，`INSTALL.md` §1/§2.2/§3/§6 同步该要求。
+- **B2 机器层红线**：机器层补回 `*.env` / `~/.ssh` deny + bash 红线（与 `share/opencode.json` 同款），未挂载项目（如 `D:\qb`）同样生效。
+- **B3 死重清理**：机器层 `package.json` / `package-lock.json` / `bun.lock` / `node_modules` 移入 `_trash-20260914/`，重启验收通过后删除。
+- **A1 复核**：`share/tools/kb.py` 凭据读取机器层 `~/.config/opencode/kanboard.env`，实测 `open` / `log` 正常（无 401）；无需改代码。
+- 回滚：机器层还原 `opencode.json.bak-20260914`；仓库 `git revert` 对应提交。

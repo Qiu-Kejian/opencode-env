@@ -42,14 +42,34 @@
   // 可选：本机无 Kanboard 看板时禁用 pm-bot（见 INSTALL.md §5.1；默认不启用）
   // "agent": { "pm-bot": { "disable": true } },
 
-  // 允许在项目会话中访问的项目外目录（本机实际路径；按需增删）
+  // 安全红线（机器级，全项目生效；与 share/opencode.json 通用红线同款，勿在项目层放宽）
   "permission": {
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "**/kanboard.env": "deny",
+      "~/.ssh/*": "deny"
+    },
+    "bash": {
+      "rm -rf *": "deny",
+      "rm -fr *": "deny",
+      "Remove-Item -Recurse *": "deny",
+      "git push *": "deny",
+      "git reset --hard *": "deny",
+      "git clean *": "deny",
+      "format *": "deny"
+    },
+    // 允许在项目会话中访问的项目外目录（本机实际路径；按需增删）
     "external_directory": {
       "~/.config/opencode/*": "allow",
       "~/.local/share/opencode/*": "allow",
       "~/.local/state/opencode/*": "allow",
       "~/.cache/opencode/*": "allow",
       "{{PROJECTS_ROOT}}/*": "allow",
+      // {{REPO_ROOT}} = 公共层仓库克隆位置（junction 目标）；挂载项目会话经 junction 编辑 .opencode/... 会按真实路径判定，缺此条将触发 ask
+      "{{REPO_ROOT}}/**": "allow",
       "{{TEMP_DIR}}/**": "allow"
     }
   }

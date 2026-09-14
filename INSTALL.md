@@ -21,7 +21,7 @@ Test-Path .\share\AGENTS.md   # 必须在仓库根执行；返回 True 才继续
 
 | 参数 | 说明 | 示例 |
 |---|---|---|
-| `<repo-root>` | 本仓库克隆的绝对路径 | `E:\oce\opencode-env` |
+| `<repo-root>` | 本仓库克隆的绝对路径（同时写入机器层 `external_directory` 白名单，见 §2.2） | `E:\oce\opencode-env` |
 | `<home>` | 用户主目录 | `C:\Users\xxx` |
 | `<项目根清单>` | 要挂载的工作区根（会话起点；**注意不是 git 仓库内的子目录**） | `D:\dev\bbcare` |
 | 可选组件 | DBX / Mockoon / Pen design / Kanboard 看板（依赖 WSL 或容器 + 凭据，见 §5）/ Ollama 本地模型 | 按需勾选 |
@@ -36,7 +36,7 @@ Test-Path .\share\AGENTS.md   # 必须在仓库根执行；返回 True 才继续
    ```powershell
    robocopy "<home>\.config\opencode" "<home>\.config\opencode.backup-$(Get-Date -Format yyyyMMdd)" /E
    ```
-2. **生成 `opencode.json`**：以 `install/machine.opencode.json.template` 为底，替换占位符后**与已有配置合并**（保留未涉及字段；同名 `mcp` 条目按本机实际覆盖）。模板里每段都注明占位符含义与可选删除项。
+2. **生成 `opencode.json`**：以 `install/machine.opencode.json.template` 为底，替换占位符后**与已有配置合并**（保留未涉及字段；同名 `mcp` 条目按本机实际覆盖）。模板里每段都注明占位符含义与可选删除项。**必须包含 `external_directory` 的 `{{REPO_ROOT}}/**`（公共层仓库根）**——挂载项目会话经 junction 编辑 `.opencode/...` 时按真实路径判定，缺此条会触发 ask。
 3. **生成 `AGENTS.md`（机器层个性化）**：记录本机环境——Python/解释器路径、预批准临时目录、模型可用性备注、MCP 简述、本仓库位置。示例：
 
    ```markdown
@@ -61,7 +61,7 @@ Test-Path .\share\AGENTS.md   # 必须在仓库根执行；返回 True 才继续
 | agent 的模型名 | 本机不可用时用 `agent.<name>.model` 覆盖 | 项目根 `opencode.json` |
 | 预批准临时目录、解释器路径 | 写入机器层 `AGENTS.md` | 机器层 |
 | MCP（命令绝对路径、数据目录） | 模板替换后写入机器层 `opencode.json` | 机器层 |
-| `external_directory` 白名单 | 同上（本机实际项目盘/目录） | 机器层 |
+| `external_directory` 白名单 | 本机实际项目盘/目录 + **公共层仓库根 `<repo-root>/**`**（junction 真实路径判定，见 §2.2） | 机器层 |
 | 项目专属权限（如人读区 ask） | 项目根 `opencode.json`（宽规则在前、窄规则在后） | 项目层 |
 | 凭据 | 机器层文件（不入库） | 机器层 |
 
@@ -126,6 +126,7 @@ cmd /c mklink /J "<repo-root>\.opencode" "<repo-root>\share"
 - [ ] tools：`node .opencode/tools/mermaid-render.mjs --help`、`python .opencode/tools/kb.py`（如启用看板）可运行
 - [ ] 组件选配：未启用看板 → Tab 与 task 委派列表均无 pm-bot；启用看板 → pm-bot 可派发且 `python .opencode/tools/kb.py open` 正常
 - [ ] 权限：读 `*.env` 被 deny；项目声明的敏感目录（如 `.local/`）触发 ask
+- [ ] 公共层访问：挂载项目会话对 `.opencode/` 下文件做一次 edit → 无 external_directory ask（`<repo-root>/**` 已在机器层白名单）
 - [ ] MCP：机器层声明的 server 均可连接
 - [ ] 插件：`spawn_session` 等工具存在（若模板声明）
 - [ ] 口令：公共口令表（`执行任务书` / `开发组` / `产品` / `美工` / `mermaid`）指向正确入口
