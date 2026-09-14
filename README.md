@@ -6,6 +6,8 @@ opencode 公共配置环境仓库（agents / skills / AGENTS.md 等），跨项�
 - `share/`：**真正的配置挂载层**（agents/、skills/、AGENTS.md）——各项目根用目录联接（junction）挂到 `.opencode` 时，指向的是 `share/`
 - 目的：把「多项目共享的公共配置」从各项目目录里抽出来，单一 git 来源，远程同步，多机迁移
 
+> **文档地图**：本文档 = 设计原理与结构；`INSTALL.md` = 新机/新项目引导安装（opencode 可读可执行，含参数收集与验收）；`share/GOVERNANCE.md` = 公共层进入/修改准则（两级审核门）。
+
 ## 为什么拆两层（README 与挂载内容分离）
 
 junction 是目录级链接——若项目根 `.opencode` 直接指向仓库根，仓库根里的 `README.md` 等文件会透过 `.opencode\` 出现在项目根文件树中。
@@ -13,7 +15,7 @@ junction 是目录级链接——若项目根 `.opencode` 直接指向仓库根�
 因此仓库拆 **仓库根（文档/工作区）** 与 **`share/`（挂载内容）** 两层：
 
 ```
-E:\oce\opencode-env\          ← git 仓库（README 在这里，人可打开看）
+<repo-root>\                   ← git 仓库（README 在这里，人可打开看）
 ├── README.md                 ← 本文档（不进入任何项目根）
 ├── .gitignore
 └── share\                    ← 挂载层（junction 目标在这里）
@@ -22,7 +24,9 @@ E:\oce\opencode-env\          ← git 仓库（README 在这里，人可打开�
     └── skills\               ← 公共技能
 ```
 
-项目根 `.opencode` → junction → `E:\oce\opencode-env\share`，README 完全不可见。
+项目根 `.opencode` → junction → `<repo-root>\share`，README 完全不可见。
+
+> 约定：`<repo-root>` = 本仓库的克隆位置；`<project-root>` = 挂载它的项目根；`<legacy-config-dir>` = 旧机配置目录。
 
 ## 目录结构与可入库边界
 
@@ -100,11 +104,11 @@ return unique([
 
 ```powershell
 # 新机/新项目：克隆公共仓库到固定路径
-git clone <remote> E:\oce\opencode-env
+git clone <remote> <repo-root>
 
 # 项目根挂载 .opencode
-mklink /J "E:\idcas\08\.opencode" "E:\oce\opencode-env\share"
-Remove-Item "E:\idcas\08\.opencode"            # 若已存在真实目录先删除
+mklink /J "<project-root>\.opencode" "<repo-root>\share"
+Remove-Item "<project-root>\.opencode"        # 若已存在真实目录先删除
 ```
 
 跨平台注意：junction 是 NTFS 特性；macOS/Linux 用 `ln -s`（symlink），仓库结构不变、挂载方式不同。
@@ -120,12 +124,48 @@ Remove-Item "E:\idcas\08\.opencode"            # 若已存在真实目录先删�
 
 ## 技能审计清单（TODO：逐项审计后入 share/）
 
-以下内容当前在 `E:\dev\.opencode`，**尚未审计入仓**，逐项评估后移入 `share/`：
+以下内容当前在 `<legacy-config-dir>\.opencode`，**尚未审计入仓**，逐项评估后移入 `share/`：
 
 - [ ] `agents/`：assistant / coder / coder-pro / lead / planner / reviewer / tester / uidesigner（8 个 .md）
 - [ ] `skills/`：browser-automation / create-project-from-requirement / daily-review / de-aiify / import-zentao / inbox-processor / kefu-demand-flow / mockoon-config-gen / morning-plan / prep-meeting / process-meeting / research-assistant / sync-gtd-status / sync-smart-service / test-env-prep / thinking-partner / ui-designer / update-zentao-data / weekly-synthesis / weekly-zentao-report / work-handoff / yxxg-assign-dev（22 个）
 - [ ] `AGENTS.md`：公共规则是否入 `share/`
 - [ ] `commands/`：尚无，目录预留
-- [ ] ⚠️ 待审要点：skills 内硬编码绝对路径（`E:\dev\...` 等）在迁移后是否失效，需逐项核对或改造为相对引用
+- [ ] ⚠️ 待审要点：skills 内硬编码绝对路径（`<legacy-config-dir>` 之类）在迁移后是否失效，需逐项核对或改造为相对引用
 
 审计完成后更新本文档与 git 提交。
+
+## 本机审计与迁移记录（2026-09-14）
+
+> 以下为本机（qiu_k / D: 盘）实际情况；上方「技能审计清单」属于另一条机器的记录，保持原样。
+
+### 来源与去向
+
+| 来源 | 去向 | 内容 |
+|---|---|---|
+| `~/.config/opencode/`（全局层） | `share/` | AGENTS.md、agent（pen-designer、pm-bot）、command、skills（16）、tools（5 脚本 + mermaid/）、runbooks（4）；全局仅保留 MCP、`external_directory`、`kanboard.env` 等机器层 |
+| `D:\dev\bbcare\.opencode\` | `share/agent/`（泛化） | leader / coder / tester / reviewer / analyst / tester-alt / reviewer-alt（.bak 未迁） |
+| 新写 | `share/opencode.json` | 通用权限段（env/ssh deny 等）+ 插件（codegraph / session-spawn）+ ollama provider |
+| 新写 | `share/skills/taskbook/`、`share/skills/orchestration/` | 机制模板（实例留在 bbcare / yuantoubao 仓库） |
+
+- 有意未迁移：field-agent agent、`D:\qb` sleep-stats、上游仓库自带 `.opencode`（`D:\dev\src\opencode`）、secrets/.env、logs/state/node_modules、`.backup` 快照。
+- 备份：`D:\dev\bbcare\.backup\opencode-config-20260914\`（含回滚步骤 `MANIFEST.md`；验收通过前勿删）。
+- 新增文档：`INSTALL.md`（引导安装）、`install/`（机器/项目配置模板）、`share/GOVERNANCE.md`（公共层治理）；机器层 `~/.config/opencode/AGENTS.md`（本机个性化，不入库）。
+
+### 挂载现状与新增挂载清单
+
+| 挂载点 | 目标 | 配套 |
+|---|---|---|
+| `D:\dev\bbcare\.opencode` | `D:\oce\opencode-env\share`（junction） | `D:\dev\bbcare\opencode.json`：`.local` ask 规则 + `instructions: [".opencode/AGENTS.md"]` |
+| `D:\oce\opencode-env\.opencode` | `share`（junction，自挂载） | 仓库根 `opencode.json`：`instructions` |
+
+新项目挂载三步：
+1. `cmd /c mklink /J "<项目根>\.opencode" "D:\oce\opencode-env\share"`
+2. 项目根 `opencode.json` 加 `"instructions": [".opencode/AGENTS.md"]`（项目级权限/规则按需另加，注意宽规则在前、窄规则在后）
+3. 重启 opencode 后验证：agent / skills 可发现、`.opencode/tools/*` 可运行、`*.env` deny 生效
+
+### 注意
+
+- `.gitignore` 已重新纳入 git 跟踪（原来自忽略），新增 `.opencode/`、`share/state/`、`share/logs/`；`share/.gitignore` 为 opencode 运行时保障文件（含 mermaid 依赖清单例外），已入库。
+- opencode 启动会在 junction 目标（`share/`）内生成 `package.json` / `node_modules` / `state/` / `.gitignore`，均已忽略。
+- 跨机迁移需核对运行环境：模型可用性（`deepseek/deepseek-v4-flash`、`opencode/big-pickle`）、Pen CLI（`PEN_CLI_KEY`）、Python/Minconda 依赖、Playwright Chromium、Mockoon CLI、DBX、Ollama。
+- 配置不热加载：迁移或改动后必须重启 opencode。

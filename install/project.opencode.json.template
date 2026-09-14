@@ -1,0 +1,25 @@
+// 项目层配置模板 → 复制为 <项目根>/opencode.json（每个挂载项目一份）
+// 用法：替换 {{...}}；permission 按项目实际增删。
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // 必须：公共规则（share/AGENTS.md）只能显式引入，不会被自动发现
+  "instructions": [".opencode/AGENTS.md"],
+
+  // 可选：本项目不使用 Kanboard 看板时禁用 pm-bot（见 INSTALL.md §5.1；默认不启用）
+  // "agent": { "pm-bot": { "disable": true } },
+
+  // 可选：项目专属权限。注意同一对象内**宽规则在前、窄规则在后**（最后匹配者生效）
+  "permission": {
+    "read": {
+      "*": "allow",
+      "{{SENSITIVE_DIR}}": "ask",
+      "{{SENSITIVE_DIR}}/*": "ask"
+    },
+    "edit": {
+      "*": "allow",
+      "{{SENSITIVE_DIR}}": "ask",
+      "{{SENSITIVE_DIR}}/*": "ask"
+    }
+  }
+}

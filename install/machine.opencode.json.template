@@ -1,0 +1,56 @@
+// 机器层配置模板 → 复制为 ~/.config/opencode/opencode.json（本机生成，不入库）
+// 用法：替换 {{...}} 占位符；与已有配置合并时保留未涉及字段；不需要的段落整段删除。
+// 路径写法：JSON 中 Windows 路径请用正斜杠（如 C:/Users/x/...）或双反斜杠（C:\\Users\\x\\\\...）——单反斜杠是非法转义。
+// 注意：JSONC 允许注释，但 opencode.json 建议保持纯 JSON——写盘前删除注释。
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // 本地 MCP server；command 为本机绝对路径（占位符按实际机器替换）
+  "mcp": {
+    // {{DBX_ENABLED}} DBX 数据库客户端（可选）
+    "dbx": {
+      "type": "local",
+      "enabled": true,
+      "command": ["{{NPM_PREFIX}}/dbx-mcp-server.cmd"],
+      "environment": {
+        "DBX_DATA_DIR": "{{APPDATA}}/com.dbx.app"
+      }
+    },
+    // {{MOCKOON_ENABLED}} Mockoon mock 服务（可选）
+    "mockoon": {
+      "type": "local",
+      "enabled": true,
+      "command": ["{{NPM_PREFIX}}/mockoon-cli.cmd", "mcp"],
+      "environment": {
+        "MOCKOON_DATA_DIRS": "{{MOCK_DIRS}}"
+      }
+    },
+    // {{PENCIL_ENABLED}} pen.dev 实时编辑（VS Code 扩展，可选）
+    "pencil": {
+      "type": "local",
+      "enabled": true,
+      "command": [
+        "{{VSCODE_EXT_DIR}}/highagency.pencildev-{{PENCIL_VERSION}}/out/mcp-server-windows-x64.exe",
+        "--app",
+        "visual_studio_code",
+        "--agent",
+        "openCodeCLI"
+      ]
+    }
+  },
+
+  // 可选：本机无 Kanboard 看板时禁用 pm-bot（见 INSTALL.md §5.1；默认不启用）
+  // "agent": { "pm-bot": { "disable": true } },
+
+  // 允许在项目会话中访问的项目外目录（本机实际路径；按需增删）
+  "permission": {
+    "external_directory": {
+      "~/.config/opencode/*": "allow",
+      "~/.local/share/opencode/*": "allow",
+      "~/.local/state/opencode/*": "allow",
+      "~/.cache/opencode/*": "allow",
+      "{{PROJECTS_ROOT}}/*": "allow",
+      "{{TEMP_DIR}}/**": "allow"
+    }
+  }
+}
