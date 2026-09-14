@@ -166,7 +166,7 @@ Remove-Item "<project-root>\.opencode"        # 若已存在真实目录先删�
 ### 注意
 
 - `.gitignore` 已重新纳入 git 跟踪（原来自忽略），新增 `.opencode/`、`share/state/`、`share/logs/`；`share/.gitignore` 为 opencode 运行时保障文件（含 mermaid 依赖清单例外），已入库。
-- opencode 启动会在 junction 目标（`share/`）内生成 `package.json` / `node_modules` / `state/` / `.gitignore`，均已忽略。
+- opencode 启动会在 junction 目标（`share/`）与机器层（`~/.config/opencode/`）内生成 `package.json` / `package-lock.json` / `node_modules` / `state/` / `.gitignore` 等运行时文件，均已忽略，勿当死重清理。
 - 跨机迁移需核对运行环境：模型可用性（`deepseek/deepseek-v4-flash`、`opencode/big-pickle`）、Pen CLI（`PEN_CLI_KEY`）、Python/Minconda 依赖、Playwright Chromium、Mockoon CLI、DBX、Ollama。
 - 配置不热加载：迁移或改动后必须重启 opencode。
 
@@ -175,6 +175,6 @@ Remove-Item "<project-root>\.opencode"        # 若已存在真实目录先删�
 - **A3 路径中性化**（提交 `ec5c143`）：`share/agent/pen-designer.md` 临时目录改指机器层声明；`share/skills/mockoon-env/reference/cli-cheatsheet.md` MCP 示例改占位符并修正 `env`→`environment`。
 - **B1 公共层白名单**：机器层 `external_directory` 增 `D:/oce/opencode-env/**`（挂载项目经 junction 编辑 `.opencode/...` 按真实路径判定）；`install/machine.opencode.json.template` 增 `{{REPO_ROOT}}/**`，`INSTALL.md` §1/§2.2/§3/§6 同步该要求。
 - **B2 机器层红线**：机器层补回 `*.env` / `~/.ssh` deny + bash 红线（与 `share/opencode.json` 同款），未挂载项目（如 `D:\qb`）同样生效。
-- **B3 死重清理**：机器层 `package.json` / `package-lock.json` / `bun.lock` / `node_modules` 移入 `_trash-20260914/`，重启验收通过后删除。
+- **B3 死重清理（结论修正）**：机器层 `package.json` / `package-lock.json` / `node_modules` / `.gitignore` 经重启验证由 opencode 启动时**自动重建**（插件 SDK 依赖，属运行时管理产物，非死重）；仅 `bun.lock` 未重建。`_trash-20260914/` 已删除。
 - **A1 复核**：`share/tools/kb.py` 凭据读取机器层 `~/.config/opencode/kanboard.env`，实测 `open` / `log` 正常（无 401）；无需改代码。
 - 回滚：机器层还原 `opencode.json.bak-20260914`；仓库 `git revert` 对应提交。
