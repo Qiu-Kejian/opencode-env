@@ -104,6 +104,7 @@ cmd /c mklink /J "<repo-root>\.opencode" "<repo-root>\share"
 | Ollama（可选） | 安装 Ollama 并准备模板中声明的模型；验证 `ollama list` |
 | officecli（可选） | 按其官方安装脚本，验证 `officecli --version` |
 | Kanboard 看板（可选） | **启用**：按 `share/runbooks/kanboard-wsl.md` 部署/接入（新机先按 §8 核对重写该手册），机器层建 `kanboard.env`（凭据只落机器层）；验证 `python .opencode/tools/kb.py open`。**不启用**：跳过安装，并按 §5.1 禁用 pm-bot |
+| 插件（codegraph / session-spawn） | 无需手工安装：opencode 首次启动自动从 npm 安装，缓存于 `~/.cache/opencode/packages/<包名>`；前提：首次启动可访问 npm registry；验证：重启后 `spawn_session` 等工具存在 |
 
 ### 5.1 组件禁用（未勾选的可选组件）
 
@@ -128,7 +129,7 @@ cmd /c mklink /J "<repo-root>\.opencode" "<repo-root>\share"
 - [ ] 权限：读 `*.env` 被 deny；项目声明的敏感目录（如 `.local/`）触发 ask
 - [ ] 公共层访问：挂载项目会话对 `.opencode/` 下文件做一次 edit → 无 external_directory ask（`<repo-root>/**` 已在机器层白名单）
 - [ ] MCP：机器层声明的 server 均可连接
-- [ ] 插件：`spawn_session` 等工具存在（若模板声明）
+- [ ] 插件：`share/opencode.json` 声明的 npm 插件已自动安装（`spawn_session` 等工具存在；`~/.cache/opencode/packages/` 下可见对应目录）
 - [ ] 口令：公共口令表（`执行任务书` / `开发组` / `产品` / `美工` / `mermaid`）指向正确入口
 
 ## 7. 升级与回滚
