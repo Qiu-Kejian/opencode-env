@@ -43,17 +43,28 @@ opencode 的 `.opencode` 目录承载以下内容（均为纯文本，天然可 
 
 ## 配置分层模型
 
-opencode 的规则与配置按作用域分层，全部 **merge（deep merge）+ instructions 拼接（concat + Set 去重）**，非覆盖：
+opencode 的规则与配置按物理目录层级分层，全部 **merge（deep merge）+ instructions 拼接（concat + Set 去重）**，非覆盖。**ocbase 公共配置必须挂在「项目层」（代码仓库的上一层），不能更往上**——这是相对路径成立的前提：
 
 ```
-┌─ ① 全局层      ~/.config/opencode/          ← 个人/机器全局（不随仓库走）
-├─ ② 公共层      项目根上一级 .opencode        ← 本仓库（junction 挂载），多项目共享
-├─ ③ 项目层      项目根 .opencode              ← 本项目真实目录，自定义 agents/skills
-├─ ④ 深度层      各 git 代码仓库内 AGENTS.md   ← 与代码同源，随仓库版本控制
-└─ ⑤ 世界层      ~/.claude/CLAUDE.md 等(兼容)
+┌─ ① 深度层      各 git/svn 代码仓库内 .opencode / AGENTS.md    ← 与代码同源，随仓库版本控制
+│
+├─ ② 项目层       项目根 .opencode → junction → 本仓库 share/    ← ★ 外置公共层（ocbase 挂在项目根这一级）
+│                 ↑ 项目根 = 代码仓库的上一层，相对路径成立的关键
+│                 项目根同时可有自己的 AGENTS.md / opencode.json
+│
+├─ ③ 定制层(可选) 项目根上一级（或多项目公共父目录）的 .opencode  ← 个性化定制，真实目录
+│                 ↑ 某些项目/某组项目需要定制时，在此加一层，按需存在、不加就没有
+│
+├─ ④ 全局层      ~/.config/opencode/                            ← 个人/机器全局
+└─ ⑤ 世界层(兜底) ~/.claude/CLAUDE.md 等                        ← Claude Code 兼容
 ```
 
-加载顺序从高层到低层：全局 → 公共 → 项目 →（向下不自动扫）各代码仓库内的 AGENTS.md 不会被自动索引，只有 `instructions` glob 显式引入才进上下文。
+关键点：
+
+- **ocbase 是「外置公共层」**：内容抽取到独立 git 仓库，每个项目根用 junction 引用它，等价于"外置的共享目录"。公共配置物理上落在项目根 `.opencode`，所以 `.opencode/...` 相对引用在项目根及其下所有代码仓库内都成立。
+- **个性化定制不塞进公共层**（否则污染共享仓库），而是**加一层真实目录**（定制层，位于项目层与全局层之间）。多级收集机制天然支持——某项目要定制就加，不要就不加。
+- **相对路径成立的条件**：配置里以 `.opencode/...` 开头的相对引用，是从项目根解析的。挂得越深（越靠近项目根），深度层代码仓库引用公共配置的相对路径越短越稳定；挂到项目根上一级，深度层引用会跨级破坏。
+- 深度层（代码仓库内）的 AGENTS.md **不会自动向下索引**，只有 `instructions` glob（如 `packages/*/AGENTS.md`）显式引入才进上下文。
 
 ### instructions 数组拼接
 
