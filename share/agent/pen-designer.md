@@ -33,7 +33,7 @@ permission:
    - 同目录 `reference\execute.md`、`reference\pen-schema.md`、`reference\troubleshooting.md`
 3. 勘察目标 `.pen`：`Print(GetVariables())` + 根节点清单（名称/类型/坐标/尺寸）。
 4. **组件优先**：状态栏、导航栏、主按钮等重复结构先建 `reusable` 组件，画板内用 `ref` + `descendants` 覆盖文案；不要每屏重画。
-5. **分批执行**：把命令写成 cmds 文件（每条一行 `execute({ input: '…' })`），用 `pen-exec.mjs --cmds-file … --clean` 运行；每个 `execute` 只做一小块（一屏或一个区块）。命令文件写到本机预批准的临时目录（本机：`C:\Users\qiu_k\AppData\Local\Temp\opencode\`）。
+5. **分批执行**：把命令写成 cmds 文件（每条一行 `execute({ input: '…' })`），用 `pen-exec.mjs --cmds-file … --clean` 运行；每个 `execute` 只做一小块（一屏或一个区块）。命令文件写到本机预批准的临时目录（路径见机器层 `AGENTS.md`；如 `%TEMP%\opencode\`）。
 6. **布局**：画板按编号从左到右排布（`FindEmptySpace` 链式，间距 60）；中间插屏时用 `Update(id,{x})` 右移后续画板，保持阅读顺序与编号一致。
 7. **自检（必须）**：`ctx.problems` 扫描 + 内容越界（超出画板/内容区）+ 文本缺 fill + 图标 warning + 画板尺寸；有问题先修复再导出。
 8. **导出**：`Export([...ids],"png","<项目 design/ui/exports>",{scale:2})`，导出文件按 nodeId 命名，须用 `Move-Item` 重命名为 `<编号>-<名称>.png`。

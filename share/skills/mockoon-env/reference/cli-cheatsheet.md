@@ -55,12 +55,14 @@ mockoon-cli export --input .\environments\h5.json --output .\openapi.json --pret
 ```jsonc
 // ~/.config/opencode/opencode.json
 "mockoon": {
-  "command": ["C:\\Users\\qiu_k\\AppData\\Roaming\\npm\\mockoon-cli.cmd", "mcp"],
+  "command": ["<npm-root>\\mockoon-cli.cmd", "mcp"],
   "enabled": true,
   "type": "local",
-  "env": { "MOCKOON_DATA_DIRS": "D:\\dev\\bbcare\\yuantoubao\\mock\\environments" }
+  "environment": { "MOCKOON_DATA_DIRS": "<项目>\\mock\\environments" }
 }
 ```
+
+占位符 `<npm-root>`（npm 全局 bin 目录）、`<项目>`（挂载项目根）按本机/项目实际替换；机器层模板见 `install/machine.opencode.json.template`。
 
 工具：`list_mocks`（列目录内环境）、`start_mock`、`stop_mock`、`list_running_mocks`。`MOCKOON_DATA_DIRS` 分号分隔多目录；改配置后需重启 opencode。
 
