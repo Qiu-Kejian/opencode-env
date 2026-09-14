@@ -1,0 +1,72 @@
+{
+  "uuid": "80f944bb-1ab7-47e8-a6da-f9a19310d90a",
+  "lastMigration": 33,
+  "name": "minimal-demo",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 4010,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "f5f0f67b-71eb-428d-a20a-87cfa53f8fc8",
+      "type": "http",
+      "documentation": "最小示例：GET /health",
+      "method": "get",
+      "endpoint": "health",
+      "responses": [
+        {
+          "uuid": "228f2c7b-7605-42e7-b4ef-1c8c742289e6",
+          "body": "{\n  \"status\": \"ok\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "默认",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "f5f0f67b-71eb-428d-a20a-87cfa53f8fc8"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "data": [],
+  "callbacks": []
+}

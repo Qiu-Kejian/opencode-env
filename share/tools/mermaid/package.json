@@ -1,0 +1,9 @@
+{
+  "name": "mermaid-tooling",
+  "private": true,
+  "version": "1.0.0",
+  "description": "本地 mermaid-cli（供 tools/mermaid-render.mjs 使用；跳过 puppeteer 浏览器下载，复用 Playwright Chromium）",
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "11.17.0"
+  }
+}

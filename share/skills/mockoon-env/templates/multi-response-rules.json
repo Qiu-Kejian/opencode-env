@@ -1,0 +1,104 @@
+{
+  "uuid": "c2e963ad-164c-4682-abc2-c98a180f99fe",
+  "lastMigration": 33,
+  "name": "multi-response-demo",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 4010,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "d81f9297-9090-444a-9a66-fff6679f1cbd",
+      "type": "http",
+      "documentation": "多响应切换：query entitled=1 返回 200，否则 403 SUB_REQUIRED",
+      "method": "get",
+      "endpoint": "api/v1/babies/1/reports/latest",
+      "responses": [
+        {
+          "uuid": "f4c8c837-c8c2-4b9a-9a1d-28cd7cbd8a9d",
+          "body": "{\n  \"report\": {\n    \"id\": 1,\n    \"report_date\": \"2026-09-11\",\n    \"status\": \"ready\",\n    \"created_at\": \"2026-09-11T07:00:00+08:00\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "已订阅 200",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "entitled",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "04664913-53e8-4e9c-8d02-58ecba99b421",
+          "body": "{\n  \"code\": \"SUB_REQUIRED\",\n  \"message\": \"该宝宝暂无有效订阅，日报不可用\",\n  \"request_id\": \"mock-request-id\",\n  \"detail\": {}\n}",
+          "latency": 0,
+          "statusCode": 403,
+          "label": "未订阅 403",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "d81f9297-9090-444a-9a66-fff6679f1cbd"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "data": [],
+  "callbacks": []
+}

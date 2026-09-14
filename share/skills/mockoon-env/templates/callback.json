@@ -1,0 +1,137 @@
+{
+  "uuid": "da9714e5-14cc-43b2-bddc-2d4ad80145e0",
+  "lastMigration": 33,
+  "name": "callback-demo",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 4010,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "7e36ebca-b60a-4377-b7d4-9e10b30cc79f",
+      "type": "http",
+      "documentation": "下单：返回支付参数，3 秒后触发环境级回调模拟支付通知",
+      "method": "post",
+      "endpoint": "api/v1/babies/1/pay/orders",
+      "responses": [
+        {
+          "uuid": "bc7d560a-08ee-47e0-b941-16d317dc52fd",
+          "body": "{\n  \"order_no\": \"MOCK20260911001\",\n  \"wx\": {\n    \"app_id\": \"wx_mock_appid\",\n    \"time_stamp\": \"1726000000\",\n    \"nonce_str\": \"mocknonce\",\n    \"package\": \"prepay_id=mock\",\n    \"sign_type\": \"RSA\",\n    \"pay_sign\": \"mock-sign\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "下单成功",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": [
+            {
+              "uuid": "09ec4326-fea8-4047-b092-4b579ab4c46c",
+              "latency": 3000
+            }
+          ]
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "707aea4a-796d-42be-8e15-abd2c722ac25",
+      "type": "http",
+      "documentation": "回调接收方（模拟支付通知落地点）",
+      "method": "post",
+      "endpoint": "api/v1/_mock/pay-notify",
+      "responses": [
+        {
+          "uuid": "a702e729-ba67-4b35-8aac-8f5596d4afa6",
+          "body": "{\n  \"code\": \"OK\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "默认",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "7e36ebca-b60a-4377-b7d4-9e10b30cc79f"
+    },
+    {
+      "type": "route",
+      "uuid": "707aea4a-796d-42be-8e15-abd2c722ac25"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "data": [],
+  "callbacks": [
+    {
+      "uuid": "09ec4326-fea8-4047-b092-4b579ab4c46c",
+      "id": "cb-pay-notify",
+      "name": "模拟支付回调",
+      "documentation": "下单 3 秒后向本 mock 的通知路由发 POST；状态翻转的完整场景建议用 Data Bucket",
+      "method": "post",
+      "uri": "{{baseUrl}}/api/v1/_mock/pay-notify",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "bodyType": "INLINE",
+      "body": "{\n  \"out_trade_no\": \"MOCK20260911001\",\n  \"status\": \"paid\"\n}",
+      "filePath": "",
+      "sendFileAsBody": true,
+      "databucketID": ""
+    }
+  ]
+}
