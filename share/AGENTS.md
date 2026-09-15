@@ -62,12 +62,12 @@
 
 - 目录：`.opencode/runbooks/`（索引见 `README.md`）。
 - **触发词**：涉及 `kanboard`、`WSL`/`WSL2` 服务运维、`runbook`、自建基础设施（备份/升级/重启/排障）时，先读取对应 runbook 全文，再按其中命令操作，勿凭记忆。
-- runbook 涉及的服务（如 Kanboard v1.2.54 @ WSL2/Ubuntu 22.04，`http://localhost`）详情见 `kanboard-wsl.md`；本地 Ollama 模型 + pm-bot（维护该 Kanboard 看板）见 `llm-pmbot.md`。
+- runbook 涉及的服务（如 Kanboard v1.2.54 @ WSL2/Ubuntu 22.04，`http://localhost`）详情见 `kanboard-wsl.md`；pm-bot（维护该 Kanboard 看板，由 `opencode/big-pickle` 驱动）见 `llm-pmbot.md`。
 - 对运行环境做了实质改动后，同步更新对应 runbook 的「最近更新」。
 
 ## 看板 PM 协作（pm-bot）
 
-- 本机 Kanboard 看板（项目名见 `kanboard.env` / 看板实际）的 PM 操作用专用子 agent **pm-bot**（与主 agent 同模型，`.opencode/agent/pm-bot.md`）。
+- 本机 Kanboard 看板（项目名见 `kanboard.env` / 看板实际）的 PM 操作用专用子 agent **pm-bot**（模型 `opencode/big-pickle`，`.opencode/agent/pm-bot.md`）。
 - **触发词**：需要维护看板/任务卡（建卡/移列/加评论/按 FR 查）时，可把操作交给 pm-bot 执行，或直接用 `.opencode/tools/kb.py`（命令见 `runbooks/llm-pmbot.md`）。
 - 凭据在 `~/.config/opencode/kanboard.env`（机器层），pm-bot 只做模板化读写；删除/改权限等高危操作一律人工。
 

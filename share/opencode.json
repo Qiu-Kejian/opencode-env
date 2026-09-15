@@ -1,31 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": ["opencode-codegraph", "opencode-session-spawn"],
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Ollama (local)",
-      "options": {
-        "baseURL": "http://localhost:11434/v1"
-      },
-      "models": {
-        "qwen3-pm:8b": {
-          "name": "Qwen3-PM 8B (local)",
-          "limit": {
-            "context": 8192,
-            "output": 4096
-          }
-        },
-        "qwen3:8b": {
-          "name": "Qwen3 8B (local)",
-          "limit": {
-            "context": 8192,
-            "output": 4096
-          }
-        }
-      }
-    }
-  },
   "permission": {
     "read": {
       "*": "allow",

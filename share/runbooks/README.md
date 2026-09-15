@@ -7,7 +7,7 @@
 | 服务 | runbook | 状态 | 最近更新 |
 |------|---------|------|----------|
 | Kanboard（WSL2 原生，看板） | [kanboard-wsl.md](kanboard-wsl.md) | 运行中 | 2026-09-08 |
-| 本地 Ollama + pm-bot（Kanboard PM 执行员） | [llm-pmbot.md](llm-pmbot.md) | 运行中 | 2026-09-12 |
+| pm-bot（Kanboard PM 执行员，opencode/big-pickle） | [llm-pmbot.md](llm-pmbot.md) | 运行中 | 2026-09-15 |
 | MySQL 8 + Redis（圆头宝开发库，WSL2） | [mysql-wsl.md](mysql-wsl.md) | 运行中 | 2026-09-11 |
 
 ## 写作约定（新增服务时遵循）
