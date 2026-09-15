@@ -17,7 +17,7 @@
 | 执行任务书 | 施工单执行 | 读指定任务书文件（默认工作区 `taskbooks/`，具体路径见项目 AGENTS.md）全文，按其「执行步骤/验收/边界」执行并回填「执行记录」；机制见该目录 README.md |
 | 生成mock | Mockoon 环境生成 | 加载 skill **mockoon-env**（`.opencode/skills/mockoon-env/`），按项目契约生成/维护 Mockoon 环境 JSON；改完必跑 `mockoon-cli validate` |
 | 开发组 | 编码编排（leader / coder / tester / reviewer） | 切到 `leader` agent 按项目编排入口（默认 `orchestration/README.md`，由项目 AGENTS.md 声明）执行；非 leader 会话收到此口令先提示切换（Tab） |
-| 产品 | 产品分析师（需求 / 验收 / 待产品） | 切到 `analyst` agent；维护 docs/00/01/05 与待产品清单，不聊实现、不臆造需求、不替人拍板 |
+| 产品 | 产品分析师（需求 / 验收 / 待定项） | 切到 `analyst` agent；维护 docs/00/01/05 与待定项清单，不聊实现、不臆造需求、不替人拍板 |
 | mermaid | mermaid 渲染 | 加载 skill **mermaid-render**，用 `.opencode/tools/mermaid-render.mjs` 渲染/嵌入图（复用 Playwright Chromium，零额外浏览器下载） |
 
 ## 任务书（施工单）
