@@ -6,12 +6,12 @@
   mixed         → 文本页走 Markdown，需要 OCR 的页单独识别
 
 用法：
-  python pdf2md.py 文档.pdf
-  python pdf2md.py a.pdf b.pdf -o 输出.txt          # 批量
-  python pdf2md.py 扫描件.pdf --detect-only         # 只分类不提取
-  python pdf2md.py 扫描件.pdf --no-ocr              # 扫描版也不 OCR，只报告
-  python pdf2md.py 文档.pdf --pages                 # Markdown 中插入 <!-- Page N --> 分页标记
-  python pdf2md.py 文档.pdf --dpi 300 --verbose     # 调 OCR 分辨率 / 详细信息
+  py pdf2md.py 文档.pdf
+  py pdf2md.py a.pdf b.pdf -o 输出.txt          # 批量
+  py pdf2md.py 扫描件.pdf --detect-only         # 只分类不提取
+  py pdf2md.py 扫描件.pdf --no-ocr              # 扫描版也不 OCR，只报告
+  py pdf2md.py 文档.pdf --pages                 # Markdown 中插入 <!-- Page N --> 分页标记
+  py pdf2md.py 文档.pdf --dpi 300 --verbose     # 调 OCR 分辨率 / 详细信息
 """
 
 import argparse

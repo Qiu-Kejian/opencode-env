@@ -45,4 +45,4 @@ permission:
 
 ## 看板评论
 
-- 卡号从 sprint 文件头部解析（如 `#12`）；命令：`python .opencode/tools/kb.py comment <卡号> -m "[watchdog] <一句话>"`；无卡号或看板不可用 → 跳过并在输出记一行。
+- 卡号从 sprint 文件头部解析（如 `#12`）；命令：`py .opencode/tools/kb.py comment <卡号> -m "[watchdog] <一句话>"`；无卡号或看板不可用 → 跳过并在输出记一行。

@@ -1,7 +1,6 @@
 ---
 description: 编码编排主控（leader）。按 orchestration/README.md 拆卡、派发 coder/tester/reviewer、仲裁与合并，决策留痕；不写业务代码。触发词：编排、sprint、leader。
 mode: primary
-model: deepseek/deepseek-v4-flash
 temperature: 0.1
 permission:
   edit: allow
@@ -45,7 +44,7 @@ permission:
 3. 质量门：coder 报 done 后，先派 reviewer 审 diff，再派 tester 独立复跑；未过门按失败阶梯处理。
 4. 合并：在 `sprint/<S>` 分支上逐任务提交（信息 `<type>(<scope>): <摘要> [T-xx]`）；批次门全绿后合并回 main；批次失败保留分支不合并；不 push。
 5. 留痕：每个决策写 `orchestration/decisions.md`（append-only）；每任务证据写 `orchestration/runs/<task-id>.md`。
-6. 收尾：跑机器验收 `python orchestration/tools/acceptance.py --sprint <S> --tasks <T-...>`（报告 `orchestration/runs/<S>-acceptance.md`），由 `tester-alt`（异模型）复核报告与 `[人工]` 项清单；**机器 PASS 且无 `[人工]` 项 → 对应卡直接移「完成」**（用户已授权自动流转），否则移「待验收」且只列 `[人工]` 项；批次报告（完成 / blocked / 决策 / 证据 / 提交哈希 / 验收清单），更新 `PROGRESS.md`；每完成 3 个任务或 30 分钟出 ≤10 行进度摘要（不阻塞）。收尾时执行 **milestone 闭合检查**（README §14）：若本 sprint 关闭所属 milestone 的最后一项 → 生成验收包 `milestones/<M>.md`（机读块 + 机器汇总 + `[人工]` 汇总）、状态置 `awaiting-human`、看板阶段卡 → 「待验收」，**停止，不派下一阶段 sprint**（返工 / 收口除外）。
+6. 收尾：跑机器验收 `py orchestration/tools/acceptance.py --sprint <S> --tasks <T-...>`（报告 `orchestration/runs/<S>-acceptance.md`），由 `tester-alt`（异模型）复核报告与 `[人工]` 项清单；**机器 PASS 且无 `[人工]` 项 → 对应卡直接移「完成」**（用户已授权自动流转），否则移「待验收」且只列 `[人工]` 项；批次报告（完成 / blocked / 决策 / 证据 / 提交哈希 / 验收清单），更新 `PROGRESS.md`；每完成 3 个任务或 30 分钟出 ≤10 行进度摘要（不阻塞）。收尾时执行 **milestone 闭合检查**（README §14）：若本 sprint 关闭所属 milestone 的最后一项 → 生成验收包 `milestones/<M>.md`（机读块 + 机器汇总 + `[人工]` 汇总）、状态置 `awaiting-human`、看板阶段卡 → 「待验收」，**停止，不派下一阶段 sprint**（返工 / 收口除外）。
 
 ## 决策与失败
 

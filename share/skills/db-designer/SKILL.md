@@ -84,7 +84,7 @@ definitions are reviewable without opening the editor:
   column table (name · type · key flags · default · comment, FK annotated as
   `父表.列`), per-table index list, appendix of full relationship list.
 - Regenerate after any `.erd.json` change:
-  `python <skill>/tools/erd2md.py <path>.erd.json`
+  `py <skill>/tools/erd2md.py <path>.erd.json`
 
 ```text
 NN-<主题>.erd.json  --ERD Editor 源（可编辑/评审）

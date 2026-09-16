@@ -22,7 +22,7 @@ permission:
 
 ## 职责
 
-1. **机器验收**：运行 `python orchestration/tools/acceptance.py --sprint <S> --tasks <T-...>`（workdir = 仓库根），核对报告 `orchestration/runs/<S>-acceptance.md`；退出码非 0 时给出失败项最小复现 + 原始输出。
+1. **机器验收**：运行 `py orchestration/tools/acceptance.py --sprint <S> --tasks <T-...>`（workdir = 仓库根），核对报告 `orchestration/runs/<S>-acceptance.md`；退出码非 0 时给出失败项最小复现 + 原始输出。
 2. **对抗抽检**：抽查关键证据有效性（如契约/集成测试是否真能检出漂移、批次门证据与代码事实是否一致）。
 3. **人工项核对**：对照 sprint 文件「验收清单」，确认 `[人工]` 项清单完整（漏标即回报）。
 4. 判定并回报：`[机器]` 全 PASS 且 `[人工]` 为空 → 建议自动 accepted；否则列出待人工项。

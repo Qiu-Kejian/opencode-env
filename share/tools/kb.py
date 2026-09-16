@@ -7,14 +7,14 @@ kb.py - Kanboard JSON-RPC 客户端 CLI（pm-bot 专用工具）。
 写操作: create / move / comment   （模板化，全部写审计日志；支持 --dry-run）
 
 用法示例:
-  python kb.py ls -p 园头宝
-  python kb.py open
-  python kb.py get 12
-  python kb.py by-fr FR-ACC-01
-  python kb.py create -t "标题" --fr FR-ACC-01 --desc "..." --col 待办
-  python kb.py move 12 -c 进行中 --comment "commit abc"
-  python kb.py comment 12 -m "备注"
-  python kb.py log
+  py kb.py ls -p 园头宝
+  py kb.py open
+  py kb.py get 12
+  py kb.py by-fr FR-ACC-01
+  py kb.py create -t "标题" --fr FR-ACC-01 --desc "..." --col 待办
+  py kb.py move 12 -c 进行中 --comment "commit abc"
+  py kb.py comment 12 -m "备注"
+  py kb.py log
 """
 import argparse
 import base64

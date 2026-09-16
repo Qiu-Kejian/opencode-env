@@ -1,7 +1,6 @@
 ---
 description: 视觉稿执行器。把已评审的 design/ui 规约批量落成 pen.dev .pen 画板、自检并导出 PNG。触发词：.pen、视觉稿、画板、mockup、导出 PNG、视觉补齐。
 mode: subagent
-model: deepseek/deepseek-v4-flash
 temperature: 0.2
 permission:
   bash:

@@ -1,7 +1,6 @@
 ---
 description: 只读审计员（代码审查/走查）。对 diff 与 spec 做分级审查、输出问题与测试缺口清单，绝不修改任何文件。触发词：审计、review、复核改动、代码审查、走查。
 mode: subagent
-model: deepseek/deepseek-v4-flash
 temperature: 0.1
 permission:
   edit: deny
