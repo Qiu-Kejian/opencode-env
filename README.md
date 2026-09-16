@@ -178,3 +178,15 @@ Remove-Item "<project-root>\.opencode"        # 若已存在真实目录先删�
 - **B3 死重清理（结论修正）**：机器层 `package.json` / `package-lock.json` / `node_modules` / `.gitignore` 经重启验证由 opencode 启动时**自动重建**（插件 SDK 依赖，属运行时管理产物，非死重）；仅 `bun.lock` 未重建。`_trash-20260914/` 已删除。
 - **A1 复核**：`share/tools/kb.py` 凭据读取机器层 `~/.config/opencode/kanboard.env`，实测 `open` / `log` 正常（无 401）；无需改代码。
 - 回滚：机器层还原 `opencode.json.bak-20260914`；仓库 `git revert` 对应提交。
+
+## office 分支 · E: 办公机适配记录（2026-09-16）
+
+- **挂载**：`E:\dev\aim\.opencode` → junction → `E:\oce\opencode-env\share`；项目配置 `E:\dev\aim\opencode.json`（`instructions: [".opencode/AGENTS.md"]` + `skills.paths: [".opencode-local/skills"]`）。
+- **share 适配**（提交 d8bbe03 / 79ca37b / 05f4322 / 55a0cbd）：
+  - `opencode.json`：移除第三方 `opencode-codegraph` 插件（与 @colbymchenry/codegraph MCP 无关，插件名造成混淆）→ 声明 `mcp.codegraph`；`git push` 红线 `deny`→`ask`；保留 `opencode-session-spawn`。
+  - `AGENTS.md`：升为公共基准——并入分支与提测纪律（通用）、多线同步核查、提测/发布前置三行确认、前端产物纪律；口令「美工」保持 `pen-designer`；PDF/脚本命令 `py` 化；可选组件（看板/mockoon/pen）标注按机器启用。
+  - `runbooks/`：移除另一台机器（D:）的 Kanboard/MySQL/pm-bot 事实（本机 WSL 无对应部署）；恢复参考 `git show main:share/runbooks/<文件>`。
+  - `agent/`：6 个非异构 agent（coder/reviewer/tester/leader/analyst/pen-designer）去 `model` pin（跟随主会话）；4 个异构审核 agent（pm-bot/reviewer-alt/tester-alt/watchdog）保持 `opencode/big-pickle`；coder 吸收上下文水位纪律；tester 吸收共享环境先声明/先确认/数据校验。
+- **dev 层**：dev 版 coder/reviewer/tester 已备份（`E:\dev\.opencode\.backup-20260916\`）并在吸收落地后弃用；`E:\dev\AGENTS.md` 评审输出统一为 blocker/major/minor/nit 分级；别名调整为「美工→pen-designer、原型→uidesigner」。
+- **本机层**：全局 `opencode.jsonc` 移除悬空 `./plugins/session-relay` 引用；`opencode.json` 禁用 pm-bot（本机无看板）。
+- **回滚**：`cmd /c rmdir "E:\dev\aim\.opencode"` 摘除 junction 并还原 `E:\dev\aim\.opencode.bak-20260916`；share 改动按提交号 `git revert`；dev agent 从备份目录还原。
