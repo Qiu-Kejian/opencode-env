@@ -4,11 +4,12 @@
 
 ## 服务清单
 
+> 本机（office 分支）当前**无自建基础设施服务**：原 Kanboard / MySQL+Redis / pm-bot 三份 runbook 系另一台机器（D:）事实，不适用于本机，已从本分支移除。
+> 如需恢复参考：`git show main:share/runbooks/kanboard-wsl.md`（同理 `mysql-wsl.md`、`llm-pmbot.md`）；若本机后续实际部署服务，按下文「写作约定」新写本机 runbook 并登记。
+
 | 服务 | runbook | 状态 | 最近更新 |
 |------|---------|------|----------|
-| Kanboard（WSL2 原生，看板） | [kanboard-wsl.md](kanboard-wsl.md) | 运行中 | 2026-09-08 |
-| pm-bot（Kanboard PM 执行员，opencode/big-pickle） | [llm-pmbot.md](llm-pmbot.md) | 运行中 | 2026-09-15 |
-| MySQL 8 + Redis（圆头宝开发库，WSL2） | [mysql-wsl.md](mysql-wsl.md) | 运行中 | 2026-09-11 |
+| （暂无） | — | — | — |
 
 ## 写作约定（新增服务时遵循）
 
