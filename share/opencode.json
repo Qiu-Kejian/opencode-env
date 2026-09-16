@@ -1,6 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-codegraph", "opencode-session-spawn"],
+  "plugin": ["opencode-session-spawn"],
+  "mcp": {
+    "codegraph": {
+      "type": "local",
+      "command": ["codegraph", "serve", "--mcp"],
+      "enabled": true
+    }
+  },
   "permission": {
     "read": {
       "*": "allow",
@@ -14,7 +21,7 @@
       "rm -rf *": "deny",
       "rm -fr *": "deny",
       "Remove-Item -Recurse *": "deny",
-      "git push *": "deny",
+      "git push *": "ask",
       "git reset --hard *": "deny",
       "git clean *": "deny",
       "format *": "deny"
