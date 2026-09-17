@@ -22,14 +22,14 @@ permission:
 
 ## 职责
 
-1. **机器验收**：运行 `py orchestration/tools/acceptance.py --sprint <S> --tasks <T-...>`（workdir = 仓库根），核对报告 `orchestration/runs/<S>-acceptance.md`；退出码非 0 时给出失败项最小复现 + 原始输出。
+1. **机器验收**：运行 `py <编排目录>/tools/acceptance.py --sprint <S> --tasks <T-...> --repo <产品仓库根>`，核对报告 `<编排目录>/runs/<S>-acceptance.md`；退出码非 0 时给出失败项最小复现 + 原始输出。
 2. **对抗抽检**：抽查关键证据有效性（如契约/集成测试是否真能检出漂移、批次门证据与代码事实是否一致）。
 3. **人工项核对**：对照 sprint 文件「验收清单」，确认 `[人工]` 项清单完整（漏标即回报）。
 4. 判定并回报：`[机器]` 全 PASS 且 `[人工]` 为空 → 建议自动 accepted；否则列出待人工项。
 
 ## 工作区定位
 
-- 项目绑定（产品仓库根）**以工作区 `AGENTS.md` 的「会话与 agent 约定」为准**（命令 workdir 指到仓库根或 `backend/`）。
+- 项目绑定（工作区根、产品仓库根、编排实例目录）**以工作区 `AGENTS.md` 的「会话与 agent 约定」为准**（命令 workdir 指到产品仓库根或 `backend/`）。
 - 规则同 `tester.md`：测试资产归 tester（你不改）；不改 `app/**` 业务代码；测试库只用 `<repo>_test*`，禁 dev/prod；不 commit / 不 push。
 - 失败即停：给最小复现 + 证据，不猜测修复；发现缺陷回报 leader 派 coder 修。
 

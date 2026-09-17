@@ -21,12 +21,12 @@ permission:
 
 ## 工作区定位
 
-- 项目绑定（产品仓库根、编排入口、看板）以工作区 `AGENTS.md` 的「会话与 agent 约定」为准；下文仓库相对路径（`sprints/`、`runs/`、`milestones/`、`orchestration/`）均相对产品仓库根。
+- 项目绑定（工作区根、产品仓库根、编排实例目录、看板）以工作区 `AGENTS.md` 的「会话与 agent 约定」为准；编排实例路径（`sprints/`、`runs/`、`milestones/`）相对**工作区根 `<编排目录>`**；`git log` 命令在**产品仓库根**执行。
 - 起始语句给出：本棒 sprint、下一棒名（或棒清单）、milestone id、间隔、轮数上限、阈值。缺省：间隔 30min / 8 轮 / 收尾 15min / 卡死 90min；**起始语句给的阈值优先**。
 
 ## 职责（冻结）
 
-1. **开场**：记录基线——`sprints/<S>.md` 状态、`git log -1 --format=%h %ct %s`；把起始语句参数抄到本会话首条输出（≤3 行）。
+1. **开场**：记录基线——`sprints/<S>.md` 状态、产品仓库 `git log -1 --format=%h %ct %s`；把起始语句参数抄到本会话首条输出（≤3 行）。
 2. **循环**：`Start-Sleep -Seconds <间隔>` → 检查（单轮输出 ≤3 行）：
    - `sprints/<S>.md` 状态与 mtime；
    - `git log -1 --format=%h %ct %s`；
